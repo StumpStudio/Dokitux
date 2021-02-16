@@ -1,0 +1,4 @@
+name: Dokitux
+version: ${project.version}
+main: ru.armagidon.dokitux.Dokitux
+api-version: 1.16
