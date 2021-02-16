@@ -22,6 +22,7 @@ public abstract class DokituxCommand extends Command
             sender.sendMessage(StringUtils.create(getUsage()).color().replace("<command>",commandLabel).apply());
             return false;
         }
+        if (!sender.isOp()) return true;
         if(!handle(sender,args)){
             sender.sendMessage(StringUtils.create(getUsage()).color().replace("<command>",commandLabel).apply());
             return false;
