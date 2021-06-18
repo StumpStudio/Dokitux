@@ -12,5 +12,5 @@ Tested on: <a href="https://getbukkit.org/">Spigot</a>, <a href="https://github.
 ## Give it a try ##
 Available at the following options:
 
-* **[Discord Link](https://cdn.discordapp.com/attachments/720922470089228298/811274005158953010/dokitux-1.0-SNAPSHOT.jar)** - Download plugin
+* **[GitHub Releases](https://github.com/StumpStudio/Dokitux/releases)** - Download plugin
 * **[GitHub Releases](https://github.com/StumpStudio/Dokitux/releases)** - Download source code Dokitux
