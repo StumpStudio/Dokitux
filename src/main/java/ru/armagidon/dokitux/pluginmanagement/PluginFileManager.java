@@ -7,15 +7,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
-import ru.armagidon.dokitux.utils.DownloadCallback;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
+import java.net.URLEncoder;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.StreamSupport;
 
 public class PluginFileManager
@@ -77,7 +74,11 @@ public class PluginFileManager
     public List<PluginFile> findPlugin(String name) {
         //Get plugin id
         final List<PluginFile> pluginDataList = new ArrayList<>();
-        final String url = "https://api.spiget.org/v2/search/resources/" + name + "?field=name&fields=file%2Cid%2Cauthor%2Cname%2CtestedVersions%2Cversions";
+
+        String encodedName = URLEncoder.encode(name, "UTF-8").replace("+", "");
+
+        final String url = "https://api.spiget.org/v2/search/resources/" + encodedName + "?field=name&fields=file%2Cid%2Cauthor%2Cname%2CtestedVersions%2Cversions";
+
         HttpURLConnection fetchPluginData = makeConnection(url);
         try (BufferedReader pluginDataOut = new BufferedReader(new InputStreamReader(fetchPluginData.getInputStream()))) {
             JsonArray pluginsFound =  PARSER.parse(pluginDataOut).getAsJsonArray();
@@ -85,18 +86,23 @@ public class PluginFileManager
             for (JsonElement element : pluginsFound) {
                 JsonObject data = element.getAsJsonObject();
 
-                HttpURLConnection fetchPluginAuthor = makeConnection("https://api.spiget.org/v2/authors/" + data.get("author").getAsJsonObject().get("id").getAsInt());
+                final int pluginId = data.get("id").getAsInt();
+
                 String author;
-                try (BufferedReader pluginAuthorOut = new BufferedReader(new InputStreamReader(fetchPluginAuthor.getInputStream()))) {
-                    JsonObject obj = PARSER.parse(pluginAuthorOut).getAsJsonObject();
-                    author = obj.get("name").getAsString();
-                } catch (Exception e) {
-                    continue;
-                } finally {
-                    fetchPluginAuthor.disconnect();
+                {
+                    final int authorId = data.get("author").getAsJsonObject().get("id").getAsInt();
+                    HttpURLConnection fetchPluginAuthor = makeConnection("https://api.spiget.org/v2/authors/" + authorId);
+                    try (BufferedReader pluginAuthorOut = new BufferedReader(new InputStreamReader(fetchPluginAuthor.getInputStream()))) {
+                        JsonObject obj = PARSER.parse(pluginAuthorOut).getAsJsonObject();
+                        author = obj.get("name").getAsString();
+                    } catch (Exception e) {
+                        continue;
+                    } finally {
+                        fetchPluginAuthor.disconnect();
+                    }
                 }
 
-                HttpURLConnection fetchPluginVersion = makeConnection("https://api.spiget.org/v2/resources/" + data.get("id").getAsInt() + "/versions/latest");
+                HttpURLConnection fetchPluginVersion = makeConnection("https://api.spiget.org/v2/resources/" + pluginId + "/versions/latest");
                 String version;
                 try (BufferedReader versionReader = new BufferedReader(new InputStreamReader(fetchPluginVersion.getInputStream()))) {
                     JsonObject versions = PARSER.parse(versionReader).getAsJsonObject();
@@ -107,7 +113,7 @@ public class PluginFileManager
                 if (!fileData.get("type").getAsString().trim().equalsIgnoreCase(".jar")) continue;
 
                 pluginDataList.add(PluginFile.builder().author(author)
-                        .id(data.get("id").getAsInt())
+                        .id(pluginId)
                         .name(data.get("name").getAsString())
                         .version(version)
                         .supportedVersions(StreamSupport.stream(data.get("testedVersions").getAsJsonArray().spliterator(), false)

@@ -2,14 +2,9 @@ package ru.armagidon.dokitux.commands;
 
 import com.google.common.base.Joiner;
 import lombok.AllArgsConstructor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +12,7 @@ import ru.armagidon.dokitux.Dokitux;
 import ru.armagidon.dokitux.pluginmanagement.PluginFile;
 import ru.armagidon.dokitux.pluginmanagement.PluginFileManager;
 import ru.armagidon.dokitux.utils.DownloadCallback;
-import ru.armagidon.dokitux.utils.StringUtils;
+import ru.armagidon.dokitux.utils.StringToolsPipeline;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +25,7 @@ public class PluginCommand extends DokituxCommand
 {
 
     private final PluginFileManager pluginManager;
+
 
     public PluginCommand(PluginFileManager pluginManager) {
         super("plugin");
@@ -46,7 +42,7 @@ public class PluginCommand extends DokituxCommand
             String pluginName = args[1];
             if (pluginManager.erasePlugin(pluginName)) {
                 sender.sendMessage(ChatColor.GREEN + "Plugin successfully deleted!");
-                TextComponent component = new TextComponent(StringUtils.create("&e&nReload &ayour server to fully delete plugin!").color().apply());
+                TextComponent component = new TextComponent(StringToolsPipeline.create("&e&nReload &ayour server to fully delete plugin!").color().apply());
                 sender.sendMessage(component);
             } else {
                 sender.sendMessage("Failed to delete plugin " + pluginName);

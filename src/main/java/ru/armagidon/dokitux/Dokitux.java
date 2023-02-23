@@ -23,7 +23,9 @@ public final class Dokitux extends JavaPlugin {
     }
 
     @Override
-    public void onDisable() {}
+    public void onDisable() {
+        PLUGIN_THREAD_POOL.shutdown();
+    }
 
     @Override
     public void onLoad() {
