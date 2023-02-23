@@ -11,10 +11,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import ru.armagidon.dokitux.Dokitux;
 import ru.armagidon.dokitux.utils.DownloadCallback;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.nio.channels.Channels;
@@ -50,6 +47,7 @@ public class PluginFile
                     BufferedReader reader = new BufferedReader(new InputStreamReader(downloadLinkRequest.getInputStream()));
 
                     String link = reader.readLine().split(" ")[4];
+
                     downloadLinkRequest = makeConnection(link);
 
                     reader.close();

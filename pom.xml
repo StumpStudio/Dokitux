@@ -27,44 +27,6 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-            <!--<plugin>
-                <version>3.7.0</version>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <compilerArgs>
-                        <arg>-parameters</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.1</version>
-                <configuration>
-                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
-                    <relocations>
-                        <relocation>
-                            <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>ru.armagidon.dokitux.acf</shadedPattern> &lt;!&ndash; Replace this &ndash;&gt;
-                        </relocation>
-                        <relocation>
-                            <pattern>co.aikar.locales</pattern>
-                            <shadedPattern>ru.armagidon.dokitux.locales</shadedPattern> &lt;!&ndash; Replace this &ndash;&gt;
-                        </relocation>
-                    </relocations>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
         </plugins>
         <resources>
             <resource>
@@ -94,11 +56,6 @@
     </repositories>
 
     <dependencies>
-       <!-- <dependency>
-            <groupId>co.aikar</groupId>
-            <artifactId>acf-paper</artifactId> &lt;!&ndash; Don't forget to replace this &ndash;&gt;
-            <version>0.5.0-SNAPSHOT</version> &lt;!&ndash; Replace this as well &ndash;&gt;
-        </dependency>-->
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>

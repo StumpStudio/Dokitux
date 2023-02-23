@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import ru.armagidon.dokitux.utils.StringUtils;
+import ru.armagidon.dokitux.utils.StringToolsPipeline;
 
 import java.util.List;
 
@@ -19,12 +19,13 @@ public abstract class DokituxCommand extends Command
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         if(args.length == 0){
-            sender.sendMessage(StringUtils.create(getUsage()).color().replace("<command>",commandLabel).apply());
+            sender.sendMessage(StringToolsPipeline.create(getUsage()).color().replace("<command>",commandLabel).apply());
             return false;
         }
         if (!sender.isOp()) return true;
+
         if(!handle(sender,args)){
-            sender.sendMessage(StringUtils.create(getUsage()).color().replace("<command>",commandLabel).apply());
+            sender.sendMessage(StringToolsPipeline.create(getUsage()).color().replace("<command>",commandLabel).apply());
             return false;
         }
         return true;
